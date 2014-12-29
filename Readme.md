@@ -24,3 +24,7 @@ It will save the information into a Reactive Variable:
 
 
 This package is using the Telize Rest endpoint for achiving this.
+
+## HTTPS and Proxy Support
+
+If your server is using HTTPS the request is done from your server to the API endpoint. You will need to configure the HTTP_FORWARDED_COUNT enviroment variable to work properly on such a server.	

@@ -17,7 +17,7 @@ Meteor.startup(function(){
 	function getLocationFromServer(){
 		Meteor.call("getLocation", function(e, res){
 			if(!e && res){
-				console.log(res, JSON.parse(res));
+				UserLocation.set(res);
 			}else{
 				console.warn("It was not possible to retrive the user location");
 			}
