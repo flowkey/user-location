@@ -2,7 +2,7 @@
 UserLocation = new ReactiveVar({});
 
 Meteor.startup(function(){
-	if('https:' === document.location.protocol ){
+	if(document.location.protocol ==! 'https:'){
 		$.getJSON("http://www.telize.com/geoip?callback=?",
 			function(json) {
 				UserLocation.set(json);
