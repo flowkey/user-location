@@ -2,7 +2,7 @@ Meteor.methods({
 	getLocation: function () {
 		// check(ip, String);
 		this.unblock();
-		var ip = headers.methodClientIP(this);
+		var ip = this.connection.clientAddress;
 		console.log("user ip", ip)
 		if(!ip) throw new Meteor.Error(444, 'Ip Address could not be detected');
 		try {
