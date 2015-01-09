@@ -3,7 +3,7 @@ Meteor.methods({
 		// check(ip, String);
 		this.unblock();
 		var ip = this.connection.clientAddress;
-		console.log("user ip", ip)
+		// console.log("user ip", ip)
 		if(!ip) throw new Meteor.Error(444, 'Ip Address could not be detected');
 		try {
 		  var result = HTTP.call("GET", "http://www.telize.com/geoip/"+ip+"?");
