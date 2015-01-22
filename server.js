@@ -10,7 +10,7 @@ Meteor.methods({
 		 
 		  return JSON.parse(result.content);
 		} catch (e) {
-			console.log(e)
+			// console.log(e)
 		  // Got a network error, time-out or HTTP error in the 400 or 500 range.
 		  return false;
 		}
