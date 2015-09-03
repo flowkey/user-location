@@ -1,5 +1,7 @@
 #User Location
 This package will detect the user location using their IP Address.
+If the lookup fails, this package will fallback to a local geoip lookup that
+will only contain the county and the continent for the ip address.
 
 It will save the information into a Reactive Variable:
 
