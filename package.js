@@ -5,6 +5,10 @@ Package.describe({
   git: 'https://github.com/flowkey/user-location.git'
 });
 
+Npm.depends({
+  'geoip-ultralight': '0.1.1'
+});
+
 Package.onUse(function(api) {
   api.versionsFrom('1.0.2.1');
   api.use(["http"],"server");
