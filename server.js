@@ -13,7 +13,7 @@ Meteor.methods({
 		// console.log("user ip", ip)
 		if(!ip) throw new Meteor.Error(444, 'Ip Address could not be detected');
 
-		HTTP.call("GET", "http://www.telize.com/geoip/"+ip+"?", function(err, result){
+		HTTP.call("GET", "http://www.telize.com/geoip/"+ip+"?", {timeout: 5000}, function(err, result){
 			if (err){
 				var countryCode = geoip.lookupCountry(ip);
 				var lightLookup = {
