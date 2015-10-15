@@ -42,7 +42,7 @@ function getLocationForIp(ip){
 
 			return requestFuture.return(correctedResult);
 		}
-		console.log(result);
+
 		requestFuture.return(JSON.parse(result.content));
 	});
 
