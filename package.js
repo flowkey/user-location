@@ -1,12 +1,12 @@
 Package.describe({
   name: 'flowkey:user-location',
   summary: 'Reactive user location for free',
-  version: '1.0.10',
+  version: '1.0.11',
   git: 'https://github.com/flowkey/user-location.git'
 });
 
 Npm.depends({
-  'geoip-ultralight': '0.1.1'
+  'geoip-lite': '1.1.6'
 });
 
 Package.onUse(function(api) {

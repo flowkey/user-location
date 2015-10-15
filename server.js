@@ -1,31 +1,50 @@
 var Future = Npm.require("fibers/future");
-var geoip = Npm.require('geoip-ultralight');
+var geoip = Npm.require('geoip-lite');
 
 var continentMap = {"BD": "AS", "BE": "EU", "BF": "AF", "BG": "EU", "BA": "EU", "BB": "NA", "WF": "OC", "BL": "NA", "BM": "NA", "BN": "AS", "BO": "SA", "BH": "AS", "BI": "AF", "BJ": "AF", "BT": "AS", "JM": "NA", "BV": "AN", "BW": "AF", "WS": "OC", "BQ": "NA", "BR": "SA", "BS": "NA", "JE": "EU", "BY": "EU", "BZ": "NA", "RU": "EU", "RW": "AF", "RS": "EU", "TL": "OC", "RE": "AF", "TM": "AS", "TJ": "AS", "RO": "EU", "TK": "OC", "GW": "AF", "GU": "OC", "GT": "NA", "GS": "AN", "GR": "EU", "GQ": "AF", "GP": "NA", "JP": "AS", "GY": "SA", "GG": "EU", "GF": "SA", "GE": "AS", "GD": "NA", "GB": "EU", "GA": "AF", "SV": "NA", "GN": "AF", "GM": "AF", "GL": "NA", "GI": "EU", "GH": "AF", "OM": "AS", "TN": "AF", "JO": "AS", "HR": "EU", "HT": "NA", "HU": "EU", "HK": "AS", "HN": "NA", "HM": "AN", "VE": "SA", "PR": "NA", "PS": "AS", "PW": "OC", "PT": "EU", "SJ": "EU", "PY": "SA", "IQ": "AS", "PA": "NA", "PF": "OC", "PG": "OC", "PE": "SA", "PK": "AS", "PH": "AS", "PN": "OC", "PL": "EU", "PM": "NA", "ZM": "AF", "EH": "AF", "EE": "EU", "EG": "AF", "ZA": "AF", "EC": "SA", "IT": "EU", "VN": "AS", "SB": "OC", "ET": "AF", "SO": "AF", "ZW": "AF", "SA": "AS", "ES": "EU", "ER": "AF", "ME": "EU", "MD": "EU", "MG": "AF", "MF": "NA", "MA": "AF", "MC": "EU", "UZ": "AS", "MM": "AS", "ML": "AF", "MO": "AS", "MN": "AS", "MH": "OC", "MK": "EU", "MU": "AF", "MT": "EU", "MW": "AF", "MV": "AS", "MQ": "NA", "MP": "OC", "MS": "NA", "MR": "AF", "IM": "EU", "UG": "AF", "TZ": "AF", "MY": "AS", "MX": "NA", "IL": "AS", "FR": "EU", "IO": "AS", "SH": "AF", "FI": "EU", "FJ": "OC", "FK": "SA", "FM": "OC", "FO": "EU", "NI": "NA", "NL": "EU", "NO": "EU", "NA": "AF", "VU": "OC", "NC": "OC", "NE": "AF", "NF": "OC", "NG": "AF", "NZ": "OC", "NP": "AS", "NR": "OC", "NU": "OC", "CK": "OC", "XK": "EU", "CI": "AF", "CH": "EU", "CO": "SA", "CN": "AS", "CM": "AF", "CL": "SA", "CC": "AS", "CA": "NA", "CG": "AF", "CF": "AF", "CD": "AF", "CZ": "EU", "CY": "EU", "CX": "AS", "CR": "NA", "CW": "NA", "CV": "AF", "CU": "NA", "SZ": "AF", "SY": "AS", "SX": "NA", "KG": "AS", "KE": "AF", "SS": "AF", "SR": "SA", "KI": "OC", "KH": "AS", "KN": "NA", "KM": "AF", "ST": "AF", "SK": "EU", "KR": "AS", "SI": "EU", "KP": "AS", "KW": "AS", "SN": "AF", "SM": "EU", "SL": "AF", "SC": "AF", "KZ": "AS", "KY": "NA", "SG": "AS", "SE": "EU", "SD": "AF", "DO": "NA", "DM": "NA", "DJ": "AF", "DK": "EU", "VG": "NA", "DE": "EU", "YE": "AS", "DZ": "AF", "US": "NA", "UY": "SA", "YT": "AF", "UM": "OC", "LB": "AS", "LC": "NA", "LA": "AS", "TV": "OC", "TW": "AS", "TT": "NA", "TR": "AS", "LK": "AS", "LI": "EU", "LV": "EU", "TO": "OC", "LT": "EU", "LU": "EU", "LR": "AF", "LS": "AF", "TH": "AS", "TF": "AN", "TG": "AF", "TD": "AF", "TC": "NA", "LY": "AF", "VA": "EU", "VC": "NA", "AE": "AS", "AD": "EU", "AG": "NA", "AF": "AS", "AI": "NA", "VI": "NA", "IS": "EU", "IR": "AS", "AM": "AS", "AL": "EU", "AO": "AF", "AQ": "AN", "AS": "OC", "AR": "SA", "AU": "OC", "AT": "EU", "AW": "NA", "IN": "AS", "AX": "EU", "AZ": "AS", "IE": "EU", "ID": "AS", "UA": "EU", "QA": "AS", "MZ": "AF"};
 
 
 Meteor.methods({
 	getLocation: function () {
-		// check(ip, String);
 		this.unblock();
-		var requestFuture = new Future();
 		var ip = this.connection.clientAddress;
-		// console.log("user ip", ip)
-		if(!ip) throw new Meteor.Error(444, 'Ip Address could not be detected');
+		return getLocationForIp(ip);
+	},
 
-		HTTP.call("GET", "http://www.telize.com/geoip/"+ip+"?", {timeout: 5000}, function(err, result){
-			if (err){
-				var countryCode = geoip.lookupCountry(ip);
-				var lightLookup = {
-					country_code: countryCode,
-					continent: continentMap[countryCode]
-				};
-
-				return requestFuture.return(lightLookup);
-			}
-			requestFuture.return(JSON.parse(result.content));
-		});
-
-		return requestFuture.wait();
+	getLocationForIp: function(ip){
+		this.unblock();
+		return getLocationForIp(ip);
 	}
 });
+
+
+function getLocationForIp(ip){
+	var requestFuture = new Future();
+
+	if(!ip) throw new Meteor.Error(444, 'No Ip Address Detected');
+
+	HTTP.call("GET", "http://www.telize.com/geoip/"+ip+"?", {timeout: 5000}, function(err, result){
+		if (err){
+			var correctedResult = {}
+			var lookup = geoip.lookup(ip);
+
+			if(lookup){
+				correctedResult.country_code = lookup.country;
+				correctedResult.region_code = lookup.region;
+				correctedResult.region = lookup.city;
+				correctedResult.latitude = lookup.ll && lookup.ll[0];
+				correctedResult.longitude = lookup.ll && lookup.ll[1];
+				correctedResult.continent_code = continentMap[countryCode];
+			}else{
+				throw new Meteor.Error(444, 'No Ip Address Detected');
+			}
+	
+
+			return requestFuture.return(correctedResult);
+		}
+		console.log(result);
+		requestFuture.return(JSON.parse(result.content));
+	});
+
+	return requestFuture.wait();
+}

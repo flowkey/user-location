@@ -3,7 +3,21 @@ This package will detect the user location using their IP Address.
 If the lookup fails, this package will fallback to a local geoip lookup that
 will only contain the county and the continent for the ip address.
 
-It will save the information into a Reactive Variable:
+You will get 2 Server Methods. Both methods will return the ip info.
+	
+	*  getLocation(callback) - connected users ip lookup
+	*  getLocationForIp(ip, callback)
+
+Here is a short example:
+
+	Meteor.call('getLocationForIp', '46.19.37.108', function(err,res){
+		console.log(err, res)
+	})
+
+
+Caution: Detecting the users IP Address could not work while wokring locally.
+
+The package sends a client side request only if possible and saves it to a Reactive Variable:
 
 	UserLocation.get();
 
