@@ -36,7 +36,7 @@ function getLocationForIp(ip){
 				correctedResult.longitude = lookup.ll && lookup.ll[1];
 				correctedResult.continent_code = continentMap[countryCode];
 			}else{
-				throw new Meteor.Error(444, 'No Ip Address Detected');
+				return requestFuture.return(null);
 			}
 	
 
