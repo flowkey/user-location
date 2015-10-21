@@ -14,6 +14,10 @@ Meteor.methods({
 	getLocationForIp: function(ip){
 		this.unblock();
 		return getLocationForIp(ip);
+	},
+
+	_logUserIp: function(ip){
+		return this.connection.clientAddress;
 	}
 });
 
@@ -21,7 +25,7 @@ Meteor.methods({
 function getLocationForIp(ip){
 	var requestFuture = new Future();
 
-	if(!ip) throw new Meteor.Error(444, 'No Ip Address Detected');
+	if(!ip) throw new Meteor.Error(444, '[user-location] No Ip Address Detected');
 
 	HTTP.call("GET", "http://www.telize.com/geoip/"+ip+"?", {timeout: 5000}, function(err, result){
 		if (err){
@@ -36,10 +40,9 @@ function getLocationForIp(ip){
 				correctedResult.longitude = lookup.ll && lookup.ll[1];
 				correctedResult.continent_code = continentMap[countryCode];
 			}else{
-				return requestFuture.return(null);
+				return requestFuture.throw(new Meteor.Error(444, '[user-location] Ip Lookup failed in all cases'));
 			}
 	
-
 			return requestFuture.return(correctedResult);
 		}
 
