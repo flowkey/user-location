@@ -29,19 +29,25 @@ function getLocationForIp(ip){
 
 	HTTP.call("GET", "http://www.telize.com/geoip/"+ip+"?", {timeout: 5000}, function(err, result){
 		if (err){
-			var correctedResult = {}
-			var lookup = geoip.lookup(ip);
+			
+			try{
+				var correctedResult = {}
+				var lookup = geoip.lookup(ip);
 
-			if(lookup){
-				correctedResult.country_code = lookup.country;
-				correctedResult.region_code = lookup.region;
-				correctedResult.region = lookup.city;
-				correctedResult.latitude = lookup.ll && lookup.ll[0];
-				correctedResult.longitude = lookup.ll && lookup.ll[1];
-				correctedResult.continent_code = continentMap[countryCode];
-			}else{
-				return requestFuture.throw(new Meteor.Error(444, '[user-location] Ip Lookup failed in all cases'));
+				if(lookup){
+					correctedResult.country_code = lookup.country;
+					correctedResult.region_code = lookup.region;
+					correctedResult.region = lookup.city;
+					correctedResult.latitude = lookup.ll && lookup.ll[0];
+					correctedResult.longitude = lookup.ll && lookup.ll[1];
+					correctedResult.continent_code = continentMap[correctedResult.country_code];
+				}else{
+					return requestFuture.throw(new Meteor.Error(444, '[user-location] Ip Lookup failed in all cases'));
+				}
+			}catch(e){
+				return requestFuture.throw(new Meteor.Error(444, '[user-location] Error in loopup function'));
 			}
+
 	
 			return requestFuture.return(correctedResult);
 		}
