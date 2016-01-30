@@ -52,7 +52,11 @@ function getLocationForIp(ip){
 			return requestFuture.return(correctedResult);
 		}
 
-		requestFuture.return(JSON.parse(result.content));
+		try{
+			requestFuture.return(JSON.parse(result.content));
+		}catch(e){
+			return requestFuture.throw(new Meteor.Error(445, '[user-location] Failed to parse result - check this'));
+		}
 	});
 
 	return requestFuture.wait();
