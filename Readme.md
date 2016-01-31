@@ -3,6 +3,13 @@ This package will detect the user location using their IP Address.
 If the lookup fails, this package will fallback to a local geoip lookup that
 will only contain the county and the continent for the ip address.
 
+
+## IMPORTANT
+As the telize public API has ben shut down - this package will fallback using the free geo-ip lite service
+The result object is not changed but might be missing some of the parameters.
+
+Pull request encouraged to add the paid service by maxmind
+
 You will get 2 Server Methods. Both methods will return the ip info.
 	
 	*  getLocation(callback) - connected users ip lookup
