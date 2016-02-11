@@ -1,7 +1,7 @@
 Package.describe({
     name: 'flowkey:user-location',
     summary: 'Reactive user location for free',
-    version: '1.0.17',
+    version: '2.0.0',
     git: 'https://github.com/flowkey/user-location.git'
 });
 

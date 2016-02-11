@@ -1,27 +1,16 @@
-// Write your package code here!
 UserLocation = new ReactiveVar({});
 
-Meteor.startup(function(){
-	if(document.location.protocol ==! 'https:'){
-		$.getJSON("http://www.telize.com/geoip?callback=?",
-			function(json) {
-				UserLocation.set(json);
-			}
-		).error(function() { 
-			getLocationFromServer();
-		});
-	}else{
-		getLocationFromServer();
-	}
+UserLocation.update = function() {
+    Meteor.call("UserLocation/get", function(e, res){
+        if (!e && res) {
+            UserLocation.set(res);
+        } else {
+            console.warn("It was not possible to retrive the user location");
+            if (e) console.warn(e);
+        }
+    })
+}
 
-	function getLocationFromServer(){
-		Meteor.call("getLocation", function(e, res){
-			if(!e && res){
-				UserLocation.set(res);
-			}else{
-				console.warn("It was not possible to retrive the user location");
-			}
-		})
-	}
-
+Meteor.startup(function() {
+    UserLocation.update();
 });

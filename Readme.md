@@ -1,53 +1,58 @@
-#User Location
-This package will detect the user location using their IP Address.
-If the lookup fails, this package will fallback to a local geoip lookup that
-will only contain the county and the continent for the ip address.
+# User Location
+
+This package detects the user's location based on their IP address. On the client:
+
+    UserLocation.get();
+
+This will be filled with IP info retrieved from the server, once it is ready (you will get a result of `{}` until then). The result is an object with the following keys:
+
+```
+{
+    ip // (Visitor's IP address, or the IP address specified in the method call)
+    country_code // (Two-letter ISO 3166-1 alpha-2 country code)
+    region_code // (A two-digit region code)
+    city // (Name of the city)
+    latitude // (Decimal)
+    longitude // (Decimal)
+    continent_code // (Two-letter continent code)
+}
+```
+
+See http://dev.maxmind.com/geoip/legacy/csv/ for a more exact rundown on some of these properties. Note that many of the properties listed on that site are not available in the free version of GeoLite currently in use by this package.
 
 
-## IMPORTANT
-As the telize public API has ben shut down - this package will fallback using the free geo-ip lite service
-The result object is not changed but might be missing some of the parameters.
+## Advanced usage
 
-Pull request encouraged to add the paid service by maxmind
+There are two Meteor Methods provided that can be called from the client or server. Both return the same location info as returned by `UserLocation.get()`, documented above.
 
-You will get 2 Server Methods. Both methods will return the ip info.
-	
-	*  getLocation(callback) - connected users ip lookup
-	*  getLocationForIp(ip, callback)
+```
+Meteor.call('UserLocation/get', callback) // IP lookup for the connected user
+Meteor.call('UserLocation/getForIp', ip, callback) // IP lookup for any ip
+```
 
 Here is a short example:
 
-	Meteor.call('getLocationForIp', '46.19.37.108', function(err,res){
-		console.log(err, res)
-	})
+```
+Meteor.call('UserLocation/getForIp', '46.19.37.108', function(err,res){
+    console.log(err, res)
+});
+```
 
-
-Caution: Detecting the users IP Address could not work while wokring locally.
-
-The package sends a client side request only if possible and saves it to a Reactive Variable:
-
-	UserLocation.get();
-
-	// ip (Visitor IP address, or IP address specified as parameter)
-	// country_code (Two-letter ISO 3166-1 alpha-2 country code)
-	// country_code3 (Three-letter ISO 3166-1 alpha-3 country code)
-	// country (Name of the country)
-	// region_code (Two-letter ISO-3166-2 state / region code)
-	// region (Name of the region)
-	// city (Name of the city)
-	// postal_code (Postal code / Zip code)
-	// continent_code (Two-letter continent code)
-	// latitude (Latitude)
-	// longitude (Longitude)
-	// dma_code (DMA Code)
-	// area_code (Area Code)
-	// asn (Autonomous System Number)
-	// isp (Internet service provider)
-	// timezone (Time Zone)
-
-
-This package is using the Telize Rest endpoint for achiving this.
 
 ## HTTPS and Proxy Support
 
-If your server is using HTTPS the request is done from your server to the API endpoint. You will need to configure the HTTP_FORWARDED_COUNT enviroment variable to work properly on such a server.	
+If your server uses HTTPS or an internal proxy setup (via nginx etc.), the auto-detected IP will be inaccurate. In this case you will need to configure the HTTP_FORWARDED_COUNT enviroment variable on the server instance.
+
+See the `clientAddress` section at http://docs.meteor.com/#/full/meteor_onconnection for more information.
+
+
+## Contributing
+
+A pull request to add support for the paid maxmind service would be more than welcome.
+
+
+## Licence
+
+This package itself is licenced with a standard MIT Licence. The licence for the Maxmind GeoLite free data can be found here:
+
+https://dev.maxmind.com/geoip/legacy/geolite/#License
