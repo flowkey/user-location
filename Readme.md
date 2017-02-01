@@ -32,10 +32,34 @@ Meteor.call('UserLocation/getForIp', ip, callback) // IP lookup for any ip
 Here is a short example:
 
 ```js
-Meteor.call('UserLocation/getForIp', '46.19.37.108', function (err, res){
+Meteor.call('UserLocation/getForIp', '46.19.37.108', function (err, res) {
     console.log(err, res);
 });
 ```
+
+## Paid maxmind service
+
+To use the maxmind api to determine the user's location you have to provide your `userId` and `licenseKey` in your [Meteor settings](https://docs.meteor.com/api/core.html#Meteor-settings):
+
+```js
+{
+    // ...
+    "public": {
+        // ...
+    },
+    "mindmax": {
+        "userId": "YOUR_USER_ID",
+        "licenseKey": "YOUR_LICENSE_KEY"
+    }
+}
+```
+
+You can then call a Meteor method to retrieve the data:
+```js
+Meteor.call('UserLocation/getForIpWithService', ip, callback);
+```
+
+**The package does only use these credentials when the method is being called. The Reactive Variable will always use the free, local method of determining the user's location. This behavior is intentional.**
 
 
 ## HTTPS and Proxy Support
@@ -43,11 +67,6 @@ Meteor.call('UserLocation/getForIp', '46.19.37.108', function (err, res){
 If your server uses HTTPS or an internal proxy setup (via nginx etc.), the auto-detected IP will be inaccurate. In this case you will need to configure the HTTP_FORWARDED_COUNT environment variable on the server instance.
 
 See the `clientAddress` section at http://docs.meteor.com/#/full/meteor_onconnection for more information.
-
-
-## Contributing
-
-A pull request to add support for the paid maxmind service would be more than welcome.
 
 
 ## License
