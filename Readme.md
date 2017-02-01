@@ -4,17 +4,16 @@ This package detects the user's location based on their IP address. On the clien
 ```js
     UserLocation.get();
 ```
-This will be filled with IP info retrieved from the server, once it is ready (you will get a result of `{}` until then). The result is an object with the following keys:
-
+This will be filled with information retrieved from the server, once it is ready (you will get a result of `{}` until then). The result is an object with the following keys:
 ```js
 {
     ip, // (Visitor's IP address, or the IP address specified in the method call)
     country_code, // (Two-letter ISO 3166-1 alpha-2 country code)
+    continent_code, // (Two-letter continent code)
     region_code, // (A two-digit region code)
     city, // (Name of the city)
     latitude, // (Decimal)
     longitude, // (Decimal)
-    continent_code, // (Two-letter continent code)
 }
 ```
 

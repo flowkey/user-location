@@ -7,6 +7,7 @@ Package.describe({
 
 Npm.depends({
     'geoip-lite': '1.1.9',
+    geoip2ws: '1.8.8',
 });
 
 Package.onUse(function (api) {
