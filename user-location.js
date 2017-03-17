@@ -2,8 +2,12 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 export const UserLocation = new ReactiveVar({});
 
-UserLocation.update = function () {
-    Meteor.call('UserLocation/get', function (err, res) {
+UserLocation.update = function (isOnStartUp) {
+    if (!isOnStartUp) {
+        console.warn('[user-location]: Using the ReactiveVar is deprecated and will be removed in the next major release. Use provided meteor methods instead.');
+    }
+
+    Meteor.call('UserLocation/get', (err, res) => {
         if (!err && res) {
             UserLocation.set(res);
         } else {
@@ -13,6 +17,6 @@ UserLocation.update = function () {
     });
 };
 
-Meteor.startup(function () {
-    UserLocation.update();
+Meteor.startup(() => {
+    UserLocation.update(true);
 });
