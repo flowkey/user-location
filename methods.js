@@ -23,10 +23,7 @@ Meteor.methods({
     },
 
     'UserLocation/getForIp'(ip) {
-        return getLocationForIpLocal(ip)
-            .catch(error => {
-                throw new Meteor.Error('[user-location]', error);
-            });
+        return getLocationForIpLocal(ip);
     },
 
     'UserLocation/getForIpWithMaxMind'(ip, sanitizeResult) {
