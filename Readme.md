@@ -49,14 +49,24 @@ To use the maxmind api to determine the user's location you have to provide your
     },
     "mindmax": {
         "userId": "YOUR_USER_ID",
-        "licenseKey": "YOUR_LICENSE_KEY"
+        "licenseKey": "YOUR_LICENSE_KEY",
+
+        // optional:
+        "service": "SERVICE_TYPE_TO_USE", // The service you'd like to use: insights, city, country (default)
+        "requestTimeout": 2000 // Socket read timeout in milliseconds to wait for reply from MaxMind (default: 2000)
     }
 }
 ```
 
 You can then call a Meteor method to retrieve the data:
 ```js
-Meteor.call('UserLocation/getForIpWithService', ip, callback);
+Meteor.call('UserLocation/getForIpWithMaxMind', ip, callback);
+```
+
+The data is sanitzed to return an object similar to calling `UserLocation/getForIp`. If you want the raw object (see https://dev.maxmind.com/geoip/geoip2/web-services/#Response_Body), pass false as a third parameter:
+```js
+const sanitizeResults = false;
+Meteor.call('UserLocation/getForIpWithMaxMind', ip, sanitizeResults, callback);
 ```
 
 **The package does only use these credentials when the method is being called. The Reactive Variable will always use the free, local method of determining the user's location. This behavior is intentional.**
