@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import getUserIp from './lib/getUserIp';
 import getLocationForIpLocal from './lib/getLocationForIpLocal';
-import getLocationForIpWithService from './lib/getLocationForIpWithService';
+import getLocationForIpWithMaxMind from './lib/getLocationForIpWithMaxMind';
 
 Meteor.methods({
     'UserLocation/get'() {
@@ -29,8 +29,8 @@ Meteor.methods({
             });
     },
 
-    'UserLocation/getForIpWithService'(ip) {
-        return getLocationForIpWithService(ip)
+    'UserLocation/getForIpWithMaxMind'(ip, sanitizeResult) {
+        return getLocationForIpWithMaxMind(ip, sanitizeResult)
             .catch(error => {
                 // I don't understand this error object yet. I want to display the api errors, but am
                 // not able to do that right now?!
