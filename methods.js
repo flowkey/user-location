@@ -14,10 +14,10 @@ Meteor.methods({
             });
     },
 
-    'UserLocation/getWithMaxMind'(sanitizeResult) {
+    'UserLocation/getWithMaxMind'(shouldSanitizeResult) {
         const meteorConnection = this.connection;
         return getUserIp(meteorConnection)
-            .then((userIp) => getLocationForIpWithMaxMind(userIp, sanitizeResult))
+            .then((userIp) => getLocationForIpWithMaxMind(userIp, shouldSanitizeResult))
             .catch(error => {
                 throw new Meteor.Error('[user-location]', error);
             });
@@ -35,8 +35,8 @@ Meteor.methods({
         return getLocationForIpLocal(ip);
     },
 
-    'UserLocation/getForIpWithMaxMind'(ip, sanitizeResult) {
-        return getLocationForIpWithMaxMind(ip, sanitizeResult)
+    'UserLocation/getForIpWithMaxMind'(ip, shouldSanitizeResult) {
+        return getLocationForIpWithMaxMind(ip, shouldSanitizeResult)
             .catch(error => {
                 throw new Meteor.Error('[user-location]', error);
             });

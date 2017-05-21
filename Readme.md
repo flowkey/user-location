@@ -65,9 +65,9 @@ Meteor.call('UserLocation/getForIpWithMaxMind', ip, callback);
 
 The data is sanitzed to return an object similar to calling `UserLocation/getForIp`. If you want the raw object (see https://dev.maxmind.com/geoip/geoip2/web-services/#Response_Body), pass false as a parameter:
 ```js
-const sanitizeResults = false;
-Meteor.call('UserLocation/getWithMaxMind', sanitizeResults, callback);
-Meteor.call('UserLocation/getForIpWithMaxMind', ip, sanitizeResults, callback);
+const shouldSanitizeResults = false;
+Meteor.call('UserLocation/getWithMaxMind', shouldSanitizeResults, callback);
+Meteor.call('UserLocation/getForIpWithMaxMind', ip, shouldSanitizeResults, callback);
 ```
 
 **The package does only use these credentials when the methods that are suffixed `withMaxMind` are being called.**
