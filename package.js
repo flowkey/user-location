@@ -18,3 +18,9 @@ Package.onUse(function (api) {
     api.mainModule('server.js', 'server');
     api.export('UserLocation');
 });
+
+
+Package.onTest((api) => {
+    api.use(['flowkey:user-location', 'ecmascript', 'practicalmeteor:mocha']);
+    api.mainModule('user-location.tests.js');
+});
