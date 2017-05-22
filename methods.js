@@ -25,10 +25,7 @@ Meteor.methods({
 
     'UserLocation/getUserIp'() {
         const meteorConnection = this.connection;
-        return getUserIp(meteorConnection)
-            .catch(error => {
-                throw new Meteor.Error('[user-location]', error);
-            });
+        return getUserIp(meteorConnection);
     },
 
     'UserLocation/getForIp'(ip) {
