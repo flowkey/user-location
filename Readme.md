@@ -79,6 +79,11 @@ If your server uses HTTPS or an internal proxy setup (via nginx etc.), the auto-
 
 See the `clientAddress` section at http://docs.meteor.com/#/full/meteor_onconnection for more information.
 
+## Testing
+
+To test the package, first add it to a meteor app (e. g. by cloning it and putting it in the packages directory). You have to install chai and sinon to the devDependencies to make the test work. You can then run the following command. Make sure to reference the settings.json, otherwise some tests won't work as expected.
+`meteor test-packages ./ --driver-package practicalmeteor:mocha --settings path/to/settings.json`
+
 
 ## License
 
