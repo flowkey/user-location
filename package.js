@@ -7,7 +7,7 @@ Package.describe({
 
 Npm.depends({
     'node-fetch': '1.6.3',
-    'geoip-lite': '1.1.9',
+    'geoip-lite': '1.2.1',
     geoip2ws: '1.8.8',
 });
 
