@@ -1,5 +1,10 @@
 # User Location
 
+## Deprecation Warning
+We are not activly using this package anymore. If you want to continue maintaing this package, please leave us a note.
+
+---
+
 This package detects the user's location based on their IP address. You can call meteor methods on the client and server to get information. See below.
 
 
